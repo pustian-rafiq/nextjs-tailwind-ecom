@@ -1,5 +1,8 @@
 "use client";
+import { Product } from "@/app/components/product/ProductCard";
 import RelatedProducts from "@/app/components/product/RelatedProducts";
+import { addToCartProduct } from "@/app/redux/features/cart";
+import { useAppDispatch } from "@/app/redux/hooks";
 import {
   useGetProductByIdQuery,
   useGetProductsByCategoryQuery,
@@ -10,16 +13,16 @@ import { useParams } from "next/navigation";
 const ProductDetailsPage = () => {
   const params = useParams();
   const id: number = Number(params.id);
-  console.log(id);
-
+  const dispatch: any = useAppDispatch();
+  // Get single product
   const {
     isLoading,
     isFetching,
     data: product,
     error,
   } = useGetProductByIdQuery(id);
-  console.log("data", product);
 
+  // Get category wise product
   const {
     isLoading: productsBycategoryLoading,
     isFetching: productsByCategoryFetching,
@@ -27,11 +30,15 @@ const ProductDetailsPage = () => {
     error: productsByCategoryError,
   } = useGetProductsByCategoryQuery(product?.category);
 
-  console.log("productsByCategory", productsByCategory);
-  const addToCart = () => {
-    // dispatch(productAddToCart(product));
+  // Add To cart
+
+  const addToCart = (product: Product) => {
+    dispatch(addToCartProduct(product));
   };
 
+  if (isLoading) {
+    return <h5>Loading product details....</h5>;
+  }
   return (
     <div>
       <div className=" px-4 py-4 mt-4  flex  flex-col items-center m-auto bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-3xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
@@ -55,6 +62,7 @@ const ProductDetailsPage = () => {
             </p>
             <a
               href="#"
+              onClick={() => addToCart(product)}
               className="mt-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               Add to cart

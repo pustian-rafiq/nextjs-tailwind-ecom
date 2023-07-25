@@ -4,7 +4,6 @@ import { addToCartProduct } from "@/app/redux/features/cart";
 import { useAppDispatch } from "@/app/redux/hooks";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { FC } from "react";
 
 interface IProduct {
@@ -18,7 +17,7 @@ interface IProduct {
     quantity?: number;
   };
 }
-type Product = {
+export interface Product {
   id?: number;
   title?: string;
   category?: string;
@@ -27,16 +26,16 @@ type Product = {
   rating?: {};
   image?: string | any;
   quantity?: number;
-};
+}
 
 const ProductCard: FC<IProduct> = ({ product }) => {
-  const params = useParams();
-  const id: number = Number(params.id);
   const dispatch = useAppDispatch();
+
+  // Product Add to Cart
   const addToCart = (product: Product) => {
-    console.log(product);
     dispatch(addToCartProduct(product));
   };
+
   return (
     <div className="max-w-xs  bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <Image
@@ -72,26 +71,3 @@ const ProductCard: FC<IProduct> = ({ product }) => {
 };
 
 export default ProductCard;
-{
-  /* <div classNameName="">
-<Image
-  src="https://picsum.photos/200"
-  alt="img"
-  width={200}
-  height={250}
-  className=""
-/>
-
-<div className="">
-  <Link href={`/product-details`} className="">
-    New Product
-  </Link>
-  <div className="">
-    <h5>1200 TK</h5>
-    <button className="cartBtn" onClick={() => addToCart()}>
-      Add to cart
-    </button>
-  </div>
-</div>
-</div> */
-}

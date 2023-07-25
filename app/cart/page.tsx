@@ -14,12 +14,9 @@ const CartPage = () => {
     (state: any) => state.cart
   );
   const dispatch = useAppDispatch();
-  console.log("CartPage", cart_list);
-  console.log("subTotal", subTotal);
 
   // Increment or decrement quantity
   const incrementDecrementQuantity = (id: number, type: string) => {
-    console.log(id);
     if (type === "increment") {
       dispatch(incrementProductQuantity(id));
     } else {
@@ -29,7 +26,6 @@ const CartPage = () => {
 
   // Remove cart item
   const removeFromCart = (id: number) => {
-    console.log(id);
     if (id) {
       dispatch(removeFromCartProduct(id));
     }

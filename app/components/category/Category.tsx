@@ -11,8 +11,10 @@ const Category: FC<ICategory> = ({ handleChange }) => {
     data: categories,
     error,
   } = useGetCategoriesQuery("categories");
-  console.log("data", categories);
 
+  if (isLoading) {
+    return <h5>Loading categories....</h5>;
+  }
   return (
     <div className="px-10">
       <h4 className="text-xl">Filter By Category</h4>

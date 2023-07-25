@@ -4,8 +4,7 @@ import { FaCartPlus } from "react-icons/fa";
 
 const Navbar = () => {
   const { cart_list, loading } = useAppSelector((state: any) => state.cart);
-  // const { cart_list } = useAppSelector((state: any) => state.products);
-  console.log(cart_list);
+
   return (
     <div className="bg-slate-300   px-10 py-5 flex justify-between items-start">
       <div className="text-teal-600 text-2xl">
