@@ -1,6 +1,33 @@
+"use client";
+import RelatedProducts from "@/app/components/product/RelatedProducts";
+import {
+  useGetProductByIdQuery,
+  useGetProductsByCategoryQuery,
+} from "@/app/redux/services/product.service";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 
 const ProductDetailsPage = () => {
+  const params = useParams();
+  const id: number = Number(params.id);
+  console.log(id);
+
+  const {
+    isLoading,
+    isFetching,
+    data: product,
+    error,
+  } = useGetProductByIdQuery(id);
+  console.log("data", product);
+
+  const {
+    isLoading: productsBycategoryLoading,
+    isFetching: productsByCategoryFetching,
+    data: productsByCategory,
+    error: productsByCategoryError,
+  } = useGetProductsByCategoryQuery(product?.category);
+
+  console.log("productsByCategory", productsByCategory);
   const addToCart = () => {
     // dispatch(productAddToCart(product));
   };
@@ -10,29 +37,21 @@ const ProductDetailsPage = () => {
       <div className=" px-4 py-4 mt-4  flex  flex-col items-center m-auto bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-3xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
         <div className="flex items-center content-between gap-10 w-full">
           <div className="w-1/3 ">
-            <Image
-              src="https://picsum.photos/200"
-              height={400}
-              width={250}
-              alt=""
-            />
+            <Image src={product?.image} height={400} width={250} alt="" />
           </div>
           <div className="flex flex-col w-2/3">
-            <h2 className="text-4xl">New Product</h2>
+            <h2 className="text-4xl">{product?.title}</h2>
             <p className="text-justify text-black text-lg mb-6">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint
-              modi sit natus excepturi ullam, molestias totam perferendis fuga
-              deleniti voluptatibus nobis laboriosam error quidem dolores id
-              ipsam nostrum voluptatum? Quo?
+              {product?.description}
             </p>
             <hr />
 
             <p className="mt-6 ">
               {" "}
-              <span className="text-2xl">Category</span> : Mango
+              <span className="text-2xl">Category</span> : {product?.category}
             </p>
             <p>
-              <span className="text-2xl">Price</span> : 1200 Tk
+              <span className="text-2xl">Price</span> : {product?.price} Tk
             </p>
             <a
               href="#"
@@ -44,8 +63,11 @@ const ProductDetailsPage = () => {
           </div>
         </div>
       </div>
-      <div className="flex">
-        <h3>Related Products</h3>
+      <div className="flex flex-col">
+        <h3 className="text-3xl mt-20 mb-10 text-orange-300">
+          Related Products
+        </h3>
+        <RelatedProducts products={productsByCategory} />
       </div>
     </div>
   );

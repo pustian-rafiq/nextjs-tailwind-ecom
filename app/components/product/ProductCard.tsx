@@ -1,38 +1,67 @@
 "use client";
+
+import { addToCartProduct } from "@/app/redux/features/cart";
+import { useAppDispatch } from "@/app/redux/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-// import { FC, useEffect } from "react";
-const ProductCard = () => {
+import { FC } from "react";
+
+interface IProduct {
+  product: {
+    id?: number;
+    title?: string;
+    category?: any;
+    price?: number;
+    description?: string;
+    image?: string | any;
+    quantity?: number;
+  };
+}
+type Product = {
+  id?: number;
+  title?: string;
+  category?: string;
+  price?: number;
+  description?: string;
+  rating?: {};
+  image?: string | any;
+  quantity?: number;
+};
+
+const ProductCard: FC<IProduct> = ({ product }) => {
   const params = useParams();
   const id: number = Number(params.id);
-  const addToCart = () => {
-    console.log("product add to cart");
-    // dispatch(productAddToCart(product));
+  const dispatch = useAppDispatch();
+  const addToCart = (product: Product) => {
+    console.log(product);
+    dispatch(addToCartProduct(product));
   };
   return (
-    <div className="max-w-xs   bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-      <a href="#">
-        <Image
-          src="https://picsum.photos/200"
-          alt="img"
-          width={170}
-          height={250}
-          className="w-full"
-        />
-      </a>
-      <div className="p-5">
-        <Link href={"product/1"}>
+    <div className="max-w-xs  bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <Image
+        src={product?.image}
+        alt="img"
+        width={170}
+        height={200}
+        className="h-64 w-full px-3 py-3"
+      />
+
+      <div className="p-5 relative">
+        <Link href={`product/${product?.id}`}>
           <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Noteworthy technology acquisitions 2021
+            {product.title?.slice(0, 30)}
           </h5>
         </Link>
 
-        <div className="flex items-center content-between gap-20">
-          <p>1200 TK</p>
+        <div className="flex items-center justify-between">
+          <span className="text-3xl font-bold text-gray-900 dark:text-white">
+            $599
+          </span>
           <a
+            onClick={() => addToCart(product)}
             href="#"
-            className=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Add to cart
           </a>
@@ -44,7 +73,7 @@ const ProductCard = () => {
 
 export default ProductCard;
 {
-  /* <div className="">
+  /* <div classNameName="">
 <Image
   src="https://picsum.photos/200"
   alt="img"

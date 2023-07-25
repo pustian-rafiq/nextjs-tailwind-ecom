@@ -1,9 +1,18 @@
+import { useGetCategoriesQuery } from "@/app/redux/services/product.service";
 import { FC } from "react";
 import Input from "../shared/Input";
 interface ICategory {
   handleChange: any;
 }
 const Category: FC<ICategory> = ({ handleChange }) => {
+  const {
+    isLoading,
+    isFetching,
+    data: categories,
+    error,
+  } = useGetCategoriesQuery("categories");
+  console.log("data", categories);
+
   return (
     <div className="px-10">
       <h4 className="text-xl">Filter By Category</h4>
@@ -13,13 +22,15 @@ const Category: FC<ICategory> = ({ handleChange }) => {
           <span className="ml-2"></span>All
         </label>
 
-        <Input
-          handleChange={handleChange}
-          value="Mango"
-          title="Mango"
-          name="filter"
-          key="i"
-        />
+        {categories?.map((category: any, i: number) => (
+          <Input
+            handleChange={handleChange}
+            value={category}
+            title={category}
+            name="filter"
+            key={i}
+          />
+        ))}
       </div>
     </div>
   );
